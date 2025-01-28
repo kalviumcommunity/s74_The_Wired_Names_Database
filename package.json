@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "The **Wired Names Database** is a creative and interactive platform that allows users to explore a collection of unique, unconventional, and fascinating names from across the globe. This project celebrates the diversity and charm of unusual names, providing users with an engaging and entertaining experience.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+ "scripts": {
+  "test": "jest"
+}
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kalviumcommunity/s74_The_Wired_Names_Database.git"
