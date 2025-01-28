@@ -1,11 +1,24 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const errorHandler = require('./errorHandler');
 
-app.get('/ping', (req, res) => {
-    res.send('pong');
+// Your routes here
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+// Invalid route handler
+app.use((req, res, next) => {
+  res.status(404).json({
+    error: true,
+    message: 'Route not found',
+  });
+});
+
+// Error handling middleware
+app.use(errorHandler);
+
+// Start server
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
