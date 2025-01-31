@@ -17,3 +17,8 @@ Back-End: MongoDB – To manage and store data efficiently.
 # Why This Project?
 
 This project combines entertainment with functionality, appealing to users through its fun and interactive theme while serving as an excellent opportunity to develop a full-stack application. It allows me to enhance my technical skills in front-end and back-end development, database management, and user engagement strategies.
+
+
+
+# Deplyment link 
+https://s74-the-wired-names-database-2.onrender.com
