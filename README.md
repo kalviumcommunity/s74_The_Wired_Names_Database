@@ -20,5 +20,5 @@ This project combines entertainment with functionality, appealing to users throu
 
 
 
-# Deplyment link 
+# Deployment link 
 https://s74-the-wired-names-database-2.onrender.com
