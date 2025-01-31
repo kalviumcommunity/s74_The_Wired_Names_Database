@@ -13,9 +13,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/kalviumcommunity/s74_The_Wired_Names_Database/issues"
-  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
   "homepage": "https://github.com/kalviumcommunity/s74_The_Wired_Names_Database#readme"
 }
