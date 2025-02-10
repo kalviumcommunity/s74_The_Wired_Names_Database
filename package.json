@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest"
-  },  
-
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kalviumcommunity/s74_The_Wired_Names_Database.git"
@@ -16,7 +15,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.2"
-  },  
-
+  },
   "homepage": "https://github.com/kalviumcommunity/s74_The_Wired_Names_Database#readme"
 }
