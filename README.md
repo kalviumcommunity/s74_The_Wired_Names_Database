@@ -49,3 +49,9 @@ This project combines entertainment with functionality, appealing to users throu
 # Deployment link 
 https://s74-the-wired-names-database-2.onrender.com
 
+---
+# Front-end deployment link:
+
+https://wirednamesss.netlify.app/
+
+---
