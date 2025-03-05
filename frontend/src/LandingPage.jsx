@@ -1,3 +1,4 @@
+import React from "react";
 function LandingPage() {
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center p-6 bg-gradient-to-r from-green-300 via-blue-300 to-purple-400">
