@@ -20,8 +20,8 @@ router.get("/users", async (req, res) => {
 // ✅ Create a new user (Signup)
 router.post("/users", async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const newUser = new User({ username, password });
+        const { username, password, origin, meaning } = req.body;
+        const newUser = new User({ username, password, origin, meaning });
         await newUser.save();
         res.json({ message: "User created successfully!", user: newUser });
     } catch (error) {
