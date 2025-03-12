@@ -9,7 +9,7 @@ function LandingPage() {
     setTimeout(() => {
       document.getElementById("name-list-section").scrollIntoView({ behavior: "smooth" });
     }, 100);
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center p-6 bg-gradient-to-r from-green-300 via-blue-300 to-purple-400">
