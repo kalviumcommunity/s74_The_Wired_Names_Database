@@ -1,51 +1,94 @@
 const express = require("express");
-const User = require("./models/user"); // Import User model
+const mongoose = require("mongoose"); // ✅ Import mongoose for ID validation
 const router = express.Router();
-
-// ✅ API Health Check
-router.get("/", (req, res) => {
-    res.send("API is working!");
-});
+const User = require("./models/User");
 
 // ✅ Get all users
-router.get("/users", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const users = await User.find();
         res.json(users);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 });
 
-// ✅ Create a new user (Signup)
-router.post("/users", async (req, res) => {
+// ✅ Get a single user by ID
+router.get("/:id", async (req, res) => {
     try {
-        const { username, password, origin, meaning } = req.body;
-        const newUser = new User({ username, password, origin, meaning });
-        await newUser.save();
-        res.json({ message: "User created successfully!", user: newUser });
+        const { id } = req.params;
+
+        // 🔹 Validate MongoDB ID format
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid user ID format" });
+        }
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json(user);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error fetching user:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
+// ✅ Create a user
+router.post("/", async (req, res) => {
+    try {
+        const newUser = new User(req.body);
+        await newUser.save();
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.error("Error creating user:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 });
 
 // ✅ Update a user
-router.put("/users/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { id } = req.params;
+
+        // 🔹 Validate MongoDB ID format
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid user ID format" });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         res.json(updatedUser);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 });
 
 // ✅ Delete a user
-router.delete("/users/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
-        await User.findByIdAndDelete(req.params.id);
-        res.json({ message: "User deleted successfully!" });
+        const { id } = req.params;
+
+        // 🔹 Validate MongoDB ID format
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid user ID format" });
+        }
+
+        const deletedUser = await User.findByIdAndDelete(id);
+        if (!deletedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({ message: "User deleted successfully" });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error deleting user:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 });
 
