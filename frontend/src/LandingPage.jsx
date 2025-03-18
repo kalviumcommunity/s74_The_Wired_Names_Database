@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+// frontend/LandingPage.jsx
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import NameList from "../components/NameList"; // Corrected import path
 
 function LandingPage() {
   const [showNames, setShowNames] = useState(false);
-  const [names, setNames] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -12,18 +13,12 @@ function LandingPage() {
     password: "default123",
   });
 
-  // Fetch names from the backend
-  const fetchNames = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/users");
-      setNames(response.data);
-      setShowNames(true);
-    } catch (error) {
-      console.error("Error fetching names:", error);
-    }
-  };
+  useEffect(() => {
+    // Check if the component should show the names list on mount
+    // You might want to adjust this logic based on your desired behavior
+    // For now, it will only show the initial landing page.
+  }, []);
 
-  // Add new name to the database
   const handleAddName = async () => {
     if (!formData.username || !formData.origin || !formData.meaning) {
       alert("Please fill all fields!");
@@ -32,7 +27,7 @@ function LandingPage() {
 
     try {
       await axios.post("http://localhost:3000/users", formData);
-      fetchNames();
+      setShowNames(true); // Show the updated list
       setFormData({ username: "", origin: "", meaning: "", password: "default123" });
       setShowForm(false);
     } catch (error) {
@@ -53,7 +48,7 @@ function LandingPage() {
 
           {/* Show Names Button */}
           <button
-            onClick={fetchNames}
+            onClick={() => setShowNames(true)}
             className="mt-6 px-6 py-3 bg-blue-600 text-white font-bold rounded-full shadow-lg transition-all transform hover:scale-110 hover:bg-blue-700"
           >
             Show Names
@@ -103,15 +98,7 @@ function LandingPage() {
       ) : (
         <div className="w-full text-center">
           <h2 className="text-3xl font-bold text-white">Names List</h2>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {names.map((name) => (
-              <div key={name._id} className="bg-white/30 backdrop-blur-md p-4 rounded-lg shadow-md border border-white/20">
-                <h3 className="text-xl font-bold text-yellow-300">{name.username}</h3>
-                <p className="text-gray-200">Origin: {name.origin}</p>
-                <p className="text-gray-300 italic">Meaning: {name.meaning}</p>
-              </div>
-            ))}
-          </div>
+          <NameList />
 
           {/* Back Button */}
           <button
