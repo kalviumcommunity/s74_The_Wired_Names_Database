@@ -1,7 +1,6 @@
-// frontend/LandingPage.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import NameList from "../components/NameList"; // Corrected import path
+import NameList from "../components/NameList";
 
 function LandingPage() {
   const [showNames, setShowNames] = useState(false);
@@ -11,12 +10,21 @@ function LandingPage() {
     origin: "",
     meaning: "",
     password: "default123",
+    created_by: "", // Add created_by to form data
   });
+  const [users, setUsers] = useState([]); // State for user list
 
   useEffect(() => {
-    // Check if the component should show the names list on mount
-    // You might want to adjust this logic based on your desired behavior
-    // For now, it will only show the initial landing page.
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/users");
+        setUsers(response.data);
+      } catch (err) {
+        console.error("Error fetching user list:", err);
+      }
+    };
+
+    fetchUsers(); // Fetch user list on component mount
   }, []);
 
   const handleAddName = async () => {
@@ -27,8 +35,14 @@ function LandingPage() {
 
     try {
       await axios.post("http://localhost:3000/users", formData);
-      setShowNames(true); // Show the updated list
-      setFormData({ username: "", origin: "", meaning: "", password: "default123" });
+      setShowNames(true);
+      setFormData({
+        username: "",
+        origin: "",
+        meaning: "",
+        password: "default123",
+        created_by: "",
+      });
       setShowForm(false);
     } catch (error) {
       console.error("Error adding name:", error);
@@ -69,23 +83,51 @@ function LandingPage() {
                 type="text"
                 placeholder="Username"
                 value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, username: e.target.value })
+                }
                 className="p-2 border rounded-md mr-2 text-black"
               />
               <input
                 type="text"
                 placeholder="Origin"
                 value={formData.origin}
-                onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, origin: e.target.value })
+                }
                 className="p-2 border rounded-md mr-2 text-black"
               />
               <input
                 type="text"
                 placeholder="Meaning"
                 value={formData.meaning}
-                onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, meaning: e.target.value })
+                }
                 className="p-2 border rounded-md mr-2 text-black"
               />
+              <label
+                htmlFor="created_by"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Created By:
+              </label>
+              <select
+                id="created_by"
+                name="created_by"
+                value={formData.created_by || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, created_by: e.target.value })
+                }
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option value="">None</option>
+                {users.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.username}
+                  </option>
+                ))}
+              </select>
               <button
                 onClick={handleAddName}
                 className="mt-2 px-6 py-2 bg-green-700 text-white font-bold rounded shadow-md hover:bg-green-800"

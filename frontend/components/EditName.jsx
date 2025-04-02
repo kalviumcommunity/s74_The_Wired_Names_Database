@@ -1,6 +1,5 @@
-// frontend/components/EditName.jsx
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditName() {
@@ -10,9 +9,11 @@ function EditName() {
     username: "",
     origin: "",
     meaning: "",
+    created_by: "", // Add created_by to form data
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [users, setUsers] = useState([]); // State for user list
 
   useEffect(() => {
     const fetchName = async () => {
@@ -28,7 +29,17 @@ function EditName() {
       }
     };
 
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/users");
+        setUsers(response.data);
+      } catch (err) {
+        console.error("Error fetching user list:", err);
+      }
+    };
+
     fetchName();
+    fetchUsers(); // Fetch the user list
   }, [id]);
 
   const handleChange = (e) => {
@@ -60,7 +71,12 @@ function EditName() {
         <h2 className="text-2xl font-bold mb-4">Edit Name</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+            <label
+              htmlFor="username"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Username:
+            </label>
             <input
               type="text"
               id="username"
@@ -72,7 +88,12 @@ function EditName() {
             />
           </div>
           <div>
-            <label htmlFor="origin" className="block text-gray-700 text-sm font-bold mb-2">Origin:</label>
+            <label
+              htmlFor="origin"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Origin:
+            </label>
             <input
               type="text"
               id="origin"
@@ -84,7 +105,12 @@ function EditName() {
             />
           </div>
           <div>
-            <label htmlFor="meaning" className="block text-gray-700 text-sm font-bold mb-2">Meaning:</label>
+            <label
+              htmlFor="meaning"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Meaning:
+            </label>
             <input
               type="text"
               id="meaning"
@@ -94,6 +120,28 @@ function EditName() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
+          </div>
+          <div>
+            <label
+              htmlFor="created_by"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Created By:
+            </label>
+            <select
+              id="created_by"
+              name="created_by"
+              value={formData.created_by || ""}
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">None</option>
+              {users.map((user) => (
+                <option key={user._id} value={user._id}>
+                  {user.username}
+                </option>
+              ))}
+            </select>
           </div>
           <button
             type="submit"
