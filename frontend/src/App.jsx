@@ -1,8 +1,7 @@
-// frontend/App.jsx
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage";
-import EditName from "../components/EditName"; // Corrected import path
+import EditName from "../components/EditName";
 
 function App() {
   return (
